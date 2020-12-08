@@ -26,7 +26,7 @@ try:
     if not DO_NOT_USE_PCA_DRIVER:
         PWM.set_pwm_freq(60)
         time.sleep(0.1)
-        loggin.info("PWM Set Successfully")
+        logging.info("PWM Set Successfully")
     else:
         logging.warning("DO NOT USE PCA DRIVER value is true, so not actually setting the frequency")
 except ValueError as error:
