@@ -2,7 +2,7 @@ import Adafruit_PCA9685
 import logging
 import time
 from servo import Servo
-from Adafruit-servokit import ServoKit
+from adafruit_servokit import ServoKit
 
 
 
