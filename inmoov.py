@@ -85,42 +85,56 @@ class InMoov_head():
 
     @property
     def name(self):
+        logging.info("def name: returning name %s", self.__name)
         return self.__name
     
     @name.setter
     def name(self, new_name):
+        logging.info("def name: setting name %s", new_name)
         self.__name = new_name
         
     @property    
     def eye_angle(self):
+        logging.info("def eye_angle: returning angle %s", self.__eyes.angle)
         return self.__eyes.angle
     
     @eye_angle.setter
     def eye_angle(self, value):
+        logging.info("def eye_angle: setting eye angle to : %s", value)
         self.__eyes.angle = value
 
     @property
     def jaw(self):
+        logging.info("def jaw: returning jaw %s", self.__jaw.angle)
         return self.__jaw.angle
         
     @jaw.setter
     def jaw(self, value):
+        logging.info("def jaw: setting jaw %s", value)
         self.__jaw.angle = value
     
     @property
     def eye_tilt(self):
+        logging.info("def eye_tilt: returning eye_tilt %s", self.__eye_tilt.angle)
         return self.__eye_tilt.angle
 
     @eye_tilt.setter
     def eye_tilt(self, value):
+        logging.info("def eye_tilt: setting eye_tilt %s", value)
         self.__eye_tilt.angle = value
 
 def main():
+    
     Sonny = InMoov_head()
+    print("setting eye angle to 80")
     Sonny.eye_angle = 80
     time.sleep(0.2)
+
+    print("setting eye angle to 100")
     Sonny.eye_angle = 100
     time.sleep(0.2)
+
+    print("setting eye angle to 90")
     Sonny.eye_angle = 90
 
 if __name__ == '__main__':

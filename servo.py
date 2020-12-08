@@ -31,7 +31,7 @@ class Servo():
             try:
                 PWM.set_pwm(self.__channel, self.__channel, pulse)
             except:
-                logging.warning("PWM failed to set, was driver loaded?")
+                logging.warning("- def angle: PWM failed to set, was driver loaded?")
         else:
             if value > self.__max_angle:
                 logging.warning(_F("Servo Value to high: max angle is {max}, value supplied was {val}", max=self.__max_angle, val=value))
