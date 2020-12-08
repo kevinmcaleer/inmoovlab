@@ -35,34 +35,6 @@ except ValueError as error:
     LOG_STRING = "failed to set the pwm frequency, " + error
     logging.error(LOG_STRING)
     
-def set_servo_pulse(channel, pulse):
-    if 0 <= channel <= 15 and \
-       type(channel) is int and \
-       pulse <= 4096 and \
-       pusel >= 0:
-        pulse_length = 1000000
-        pulse_length //=60
-        logging.info('{0}us per period'.format(pulse_lenth))
-        pulse_length //=4096
-        logging.info('{0}us per bit'.format(pulse_length))
-        pulse *= 1000
-        pulse //= pulse_length
-        if DO_NOT_USE_PCA_DRIVER:
-            logging.warning("PCA9685 driver not loaded, so only pretending to set servo")
-        else:
-        
-            try:
-                PWM.set_pwm(channel, 0, pulse)
-            except:
-                logging.warning("Failed to set pwm - did the driver load?")
-            
-        return True
-    print("channel less than 0 or greater than 15, or not an integer, \
-    or pulse is grater than 4096:", channel, pulse)
-    
-    return False
-
-
 class InMoov_head():
     
     __name = "Sonny"
@@ -79,6 +51,7 @@ class InMoov_head():
         self.__jaw = Servo(name = "jaw", channel=JAW_CHANNEL,min_angle=0,max_angle=30)
 
         # set the servos to the middle position (between the min and max value)
+        logging.info("setting eyes, eye tilt and jaw to default positions")
         self.__eyes.default()
         self.__eye_tilt.default()
         self.__jaw.default()
