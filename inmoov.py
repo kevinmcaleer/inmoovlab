@@ -3,7 +3,7 @@ import logging
 import time
 from servo import Servo
 
-
+logging.debug
 
 try:
     PWM = Adafruit_PCA9685.PCA9685()
