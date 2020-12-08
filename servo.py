@@ -1,6 +1,7 @@
 import logging
-import logutils
+from logutils import *
 
+_F = BraceMessage
 class Servo():
     __min_angle = 0
     __max_angle = 180
