@@ -1,7 +1,7 @@
 import logging
 from logutils import *
 import Adafruit_PCA9685
-from Adafruit_servokit import ServoKit
+# from Adafruit_servokit import ServoKit
 
 
 _F = BraceMessage
