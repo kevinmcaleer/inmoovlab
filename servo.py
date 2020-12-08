@@ -1,5 +1,6 @@
 import logging
 from logutils import *
+import Adafruit_PCA9685
 
 _F = BraceMessage
 class Servo():
@@ -8,12 +9,18 @@ class Servo():
     __name = "servo"
     __current_angle = 90
     __channel = 0
-    
+
     def __init__(self, channel, min_angle, max_angle,name=None):
         self.__name = name
         self.__channel = channel
         self.__min_angle = min_angle
         self.__max_angle = max_angle
+
+        try:
+            self.__PWM = Adafruit_PCA9685.PCA9685()
+            self.__DRIVER = True
+        except:
+            logging.error("Failed to load PCA Driver")
 
     @property
     def angle(self):
@@ -29,7 +36,7 @@ class Servo():
             pulse = int(((float(mapmax) / 100) * float(percentage)) + self.__min_angle)
             
             try:
-                PWM.set_pwm(self.__channel, self.__channel, pulse)
+                self.__PWM.set_pwm(self.__channel, self.__channel, pulse)
             except:
                 logging.warning("- def angle: name=%s PWM failed to set, was driver loaded?", self.__name)
         else:
