@@ -9,6 +9,7 @@ try:
     PWM = Adafruit_PCA9685.PCA9685()
     
     time.sleep(1)
+    DO_NOT_USE_PCA_DRIVER = False
     
 except OSError as error:
     LOG_STRING = "failed to initialise the servo driver board (Adafruit PCA9685)"
@@ -17,10 +18,6 @@ except OSError as error:
     DO_NOT_USE_PCA_DRIVER = True
     PWM = ""
     
-else: 
-    DO_NOT_USE_PCA_DRIVER = False
-    
-
 servo_min = 150
 servo_max = 600
 SLEEP_COUNT = 0.05
@@ -28,7 +25,8 @@ SLEEP_COUNT = 0.05
 try:
     if not DO_NOT_USE_PCA_DRIVER:
         PWM.set_pwm_freq(60)
-        time.sleep(1)
+        time.sleep(0.1)
+        loggin.info("PWM Set Successfully")
     else:
         logging.warning("DO NOT USE PCA DRIVER value is true, so not actually setting the frequency")
 except ValueError as error:
