@@ -123,5 +123,5 @@ def main():
     time.sleep(0.2)
     Sonny.eye_angle = 90
 
-if __name__ == __main__:
+if __name__ == '__main__':
     main()    
