@@ -39,7 +39,7 @@ class Servo():
                 logging.warning(_F("Servo Value to low: min angle is {min}, value supplied was {val} for {nam}",min=self.__min_angle, val=value, nam = self.__name))
 
     def default(self):
-        middle = self.__max_angle - self.__min_angle
+        middle = (self.__max_angle - self.__min_angle) / 2 + self.__min_angle
         self.angle = middle
         logging.info(_F("setting the angle to the middle position: {mid} for {nam}", mid = middle, nam=self.__name))
     @property
