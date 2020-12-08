@@ -1,4 +1,5 @@
 import logging
+import logutils
 
 class Servo():
     __min_angle = 0
@@ -32,22 +33,22 @@ class Servo():
                 logging.warning("PWM failed to set, was driver loaded?")
         else:
             if value > self.__max_angle:
-                logging.warning(f"Servo Value to high: max angle is {self.__max_angle}, value supplied was {value}")
+                logging.warning(_F("Servo Value to high: max angle is {self.__max_angle}, value supplied was {value}"))
             if value < self.__min_angle:
-                logging.warning(f"Servo Value to low: min angle is {self.__min_angle}, value supplied was {value}")
+                logging.warning(_F("Servo Value to low: min angle is {self.__min_angle}, value supplied was {value}"))
 
     def default(self):
         middle = self.__max_angle - self.__min_angle
         self.angle = middle
-        logging.info(f"setting the angle to the middle position: {middle}")
+        logging.info(_F("setting the angle to the middle position: {middle}"))
 
     @property
     def channel(self):
-        logging.info(f"channel is {self.__channel}")
+        logging.info(_F("channel is {self.__channel}"))
         return self.__channel
     
     @channel.setter
     def channel(self, value):
         if (value >= 0) and (value <=15):
                 self.__channel = value 
-                logging.info(f"setting the channel to {value}")
+                logging.info(_F("setting the channel to {value}"))
