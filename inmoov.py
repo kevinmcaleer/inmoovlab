@@ -1,6 +1,8 @@
 import Adafruit_PCA9685
 import logging
 import time
+from servo import Servo
+
 
 
 try:
@@ -11,14 +13,24 @@ try:
 except OSError as error:
     LOG_STRING = "failed to initialise the servo driver board (Adafruit PCA9685)"
     logging.error(LOG_STRING)
+
+    DO_NOT_USE_PCA_DRIVER = True
+    PWM = ""
     
+else: 
+    DO_NOT_USE_PCA_DRIVER = False
+    
+
 servo_min = 150
 servo_max = 600
 SLEEP_COUNT = 0.05
 
 try:
-    PWM.set_pwm_freq(60)
-    time.sleep(1)
+    if not DO_NOT_USE_PCA_DRIVER:
+        PWM.set_pwm_freq(60)
+        time.sleep(1)
+    else:
+        logging.warning("DO NOT USE PCA DRIVER value is true, so not actually setting the frequency")
 except ValueError as error:
     LOG_STRING = "failed to set the pwm frequency, " + error
     logging.error(LOG_STRING)
@@ -35,10 +47,14 @@ def set_servo_pulse(channel, pulse):
         logging.info('{0}us per bit'.format(pulse_length))
         pulse *= 1000
         pulse //= pulse_length
-        try:
-            PWM.set_pwm(channel, 0, pulse)
-        except:
-            logging.warning("Failed to set pwm - did the driver load?")
+        if DO_NOT_USE_PCA_DRIVER:
+            logging.warning("PCA9685 driver not loaded, so only pretending to set servo")
+        else:
+        
+            try:
+                PWM.set_pwm(channel, 0, pulse)
+            except:
+                logging.warning("Failed to set pwm - did the driver load?")
             
         return True
     print("channel less than 0 or greater than 15, or not an integer, \
@@ -46,44 +62,26 @@ def set_servo_pulse(channel, pulse):
     
     return False
 
-class Servo():
-    __min_angle = 0
-    __max_angle = 180
-    __name = "servo"
-    __current_angle = 90
-    __channel = 0
-    
-    def __init__(self, name=False, channel, min_angle, max_angle):
-        self.__name = name
-        self.__channel = channel
-        self.__min_angle = min_angle
-        self.__max_angle = max_angle
 
-    @property
-    def angle(self):
-        return self.__current_angle
-
-    @angle.setter
-    def angle(self, value):
-        if (value >= self.__min_angle) and (value <= self.__max_angle):
-            self.__current_angle = value
-            
-            mapmax = self.__max_angle - self.min_angle
-            percentage = (float(value) / 180) * 100
-            pulse = int(((float(mapmax) / 100) * float(percentage)) + self.__min_angle)
-            PWM.set_pwm(self.__channel, self.__channel, pulse)
-        
-class inMoov_head():
+class InMoov_head():
     
     __name = "Sonny"
     __eye_angle = 90
     __eye_tilt = 90
 
-    __servos = {}
-
     def __init__(self):
-        eyes = Servo(name)
-        
+
+        EYE_CHANNEL = 0
+        EYE_TILT_CHANNEL = 1
+        JAW_CHANNEL = 2
+        self.__eyes = Servo("eye_angle", channel=EYE_CHANNEL, min_angle=80, max_angle=100)
+        self.__eye_tilt = Servo("eye_tilt", channel=EYE_TILT_CHANNEL, min_angle=80, max_angle=100)
+        self.__jaw = Servo("jaw", channel=JAW_CHANNEL,min_angle=0,max_angle=30)
+
+        # set the servos to the middle position (between the min and max value)
+        self.__eyes.default()
+        self.__eye_tilt.default()
+        self.__jaw.default()
 
     @property
     def name(self):
@@ -95,11 +93,35 @@ class inMoov_head():
         
     @property    
     def eye_angle(self):
-        return self.__eye_angle
+        return self.__eyes.angle
     
     @eye_angle.setter
-    def eye_angle(self, new_angle):
-        self.__eye_angle = new_angle
+    def eye_angle(self, value):
+        self.__eyes.angle = value
+
+    @property
+    def jaw(self):
+        return self.__jaw.angle
         
+    @jaw.setter
+    def jaw(self, value):
+        self.__jaw.angle = value
     
-    
+    @property
+    def eye_tilt(self):
+        return self.__eye_tilt.angle
+
+    @eye_tilt.setter
+    def eye_tilt(self, value):
+        self.__eye_tilt.angle = value
+
+def main():
+    Sonny = InMoov_head()
+    Sonny.eye_angle = 80
+    time.sleep(0.2)
+    Sonny.eye_angle = 100
+    time.sleep(0.2)
+    Sonny.eye_angle = 90
+
+if name == __main__:
+    main()    
