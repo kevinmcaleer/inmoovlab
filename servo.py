@@ -30,6 +30,24 @@ class Servo():
                 PWM.set_pwm(self.__channel, self.__channel, pulse)
             except:
                 logging.warning("PWM failed to set, was driver loaded?")
-        
+        else:
+            if value > self.__max_angle:
+                logging.warning(f"Servo Value to high: max angle is {self.__max_angle}, value supplied was {value}")
+            if value < self.__min_angle:
+                logging.warning(f"Servo Value to low: min angle is {self.__min_angle}, value supplied was {value}")
+
     def default(self):
-        self.angle = self.__max_angle - self.__min_angle
+        middle = self.__max_angle - self.__min_angle
+        self.angle = middle
+        logging.info(f"setting the angle to the middle position: {middle}")
+
+    @property
+    def channel(self):
+        logging.info(f"channel is {self.__channel}")
+        return self.__channel
+    
+    @channel.setter
+    def channel(self, value):
+        if (value >= 0) and (value <=15):
+                self.__channel = value 
+                logging.info(f"setting the channel to {value}")
