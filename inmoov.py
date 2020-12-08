@@ -74,9 +74,9 @@ class InMoov_head():
         EYE_CHANNEL = 0
         EYE_TILT_CHANNEL = 1
         JAW_CHANNEL = 2
-        self.__eyes = Servo("eye_angle", channel=EYE_CHANNEL, min_angle=80, max_angle=100)
-        self.__eye_tilt = Servo("eye_tilt", channel=EYE_TILT_CHANNEL, min_angle=80, max_angle=100)
-        self.__jaw = Servo("jaw", channel=JAW_CHANNEL,min_angle=0,max_angle=30)
+        self.__eyes = Servo(name = "eye_angle", channel=EYE_CHANNEL, min_angle=80, max_angle=100)
+        self.__eye_tilt = Servo(name = "eye_tilt", channel=EYE_TILT_CHANNEL, min_angle=80, max_angle=100)
+        self.__jaw = Servo(name = "jaw", channel=JAW_CHANNEL,min_angle=0,max_angle=30)
 
         # set the servos to the middle position (between the min and max value)
         self.__eyes.default()
