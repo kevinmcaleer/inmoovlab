@@ -24,7 +24,7 @@ class Servo():
         if (value >= self.__min_angle) and (value <= self.__max_angle):
             self.__current_angle = value
             
-            mapmax = self.__max_angle - self.min_angle
+            mapmax = self.__max_angle - self.__min_angle
             percentage = (float(value) / 180) * 100
             pulse = int(((float(mapmax) / 100) * float(percentage)) + self.__min_angle)
             
